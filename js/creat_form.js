@@ -1,5 +1,6 @@
 
 var id = ''
+var delect_data = []
 function creatForm(data, list_data) {
 
 
@@ -126,6 +127,7 @@ function _delete(data) {
     var arr = []
     var id = $(this).data('id')
     var thisid = $(this).data('thisid')
+    
     for (var i = 0; i < data.length; i++) {
       if(data[i].id == id) {
         var list = data[i].list
@@ -133,6 +135,8 @@ function _delete(data) {
           if(list[j].id!=thisid) {
 
             arr.push(list[j])
+          } else {
+            delect_data.push(list[j])
           }
 
           data[i].list = arr
@@ -140,7 +144,7 @@ function _delete(data) {
       }
     }
     creat(data)
-
+    the_recycle_bin(delect_data)
   }
 
 }
@@ -189,8 +193,11 @@ function sortTable(put){
         evt.newDraggableIndex; // element's new index within new parent, only counting draggable elements
         evt.clone // the clone element
         evt.pullMode;  // when item is in another sortable: `"clone"` if cloning, `true` if moving
-        alert('拖动结束了')
+        // alert('拖动结束了')
       },
+      onChange: function (evt) {
+        console.log(evt)
+      }
     });
   }
 
@@ -243,4 +250,16 @@ function creatSelectList (select_list){
   }
   var put = ["list_box_choose"]
   sortTable(put)
+}
+
+
+//删除表单放到回收站
+function the_recycle_bin(delect_data) {
+  $('#delect_box').empty()
+  for(let v of delect_data) {
+    console.log(v)
+    var child = "<button type='button' class='btn btn-default list_each' data-id='"+v.id+" data-group='"+v.group+"'>"+v.label+"</button>"
+    $("#delect_box").append(child)
+  }
+
 }
