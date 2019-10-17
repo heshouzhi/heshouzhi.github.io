@@ -141,6 +141,7 @@
 
             //为我们生成的按钮绑定方法，这里是弹出姓名和职业的对话框
             $(".testButton").on("click", function (e) {
+                $('.button_box').empty()
                 if(e.preventDefault){
                 e.preventDefault();
                 }else{
