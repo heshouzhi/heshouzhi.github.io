@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <!--引入css-->
+    <link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.15/css/jquery.dataTables.css">
+    <link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/plug-ins/28e7751dbec/integration/bootstrap/3/dataTables.bootstrap.css">
+    
+    <!--引入JavaScript-->
+    <script src="js/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="http://cdn.datatables.net/1.10.15/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" charset="utf8" src="http://cdn.datatables.net/plug-ins/28e7751dbec/integration/bootstrap/3/dataTables.bootstrap.js"></script>
+
+    <style>
+        th, td { 
+            white-space: nowrap;
+            text-align: left;
+        }
+        .dataTables_wrapper {
+            min-width: 800px;
+            margin: 0 auto;
+        }
+        #tables_menu {
+            position: absolute;
+            left: -77px;
+            top: 0;
+            padding: 0;
+            background: #fff;
+            width: 115px;
+            text-align: left;
+            border-radius: 4px;
+        }
+        #tables_menu li {
+            list-style: none;
+            padding-left: 8px;
+            height: 38px;
+            line-height: 38px;
+        }
+
+        #tables_menu li:hover {
+            background: #f5f5f5;
+        }
+        .last_thead_tr {
+            width: 100px;
+        }
+    </style>
+</head>
+<body>
+    <div class="dataTables_wrapper">
+        <table id="example" class="display" style="width:100%">
+            <thead>
+                <tr>
+                    <td>姓名</td>
+                    <td>门派</td>
+                    <td>朝代</td>
+                    <td>性别</td>
+                    <td>职业</td>
+                    <td>自定义按钮</td>
+                </tr>
+            </thead>
+            <tbody>
+                
+            </tbody>
+        </table>
+    </div>
+    <script>
+        
+        $(document).ready(function() {
+            // 默认禁用搜索和排序
+            $.extend( $.fn.dataTable.defaults, {
+                searching: false,
+                ordering:  false
+            } );
+
+            $('#example').DataTable({
+                "scrollX": true,
+                //给table内自定义按钮
+                "columnDefs": [
+                    {
+                        // targets用于指定操作的列，从第0列开始，-1为最后一列，这里第六列
+                        // return后边是我们希望在指定列填入的按钮代码
+                        "targets": -1,
+                        'className': "last_thead_tr",
+                        "render": function ( data, type, full, meta ) {
+                            return "<div class='testButton' id='testButton' data-datas="+JSON.stringify(data)+" style='text-align: center; cursor: pointer' ><div class='button_box' style='position: relative;'></div>...</div>"
+                        }
+                    }
+                ],
+                //给列赋值，这里的列名需要和data的数据名对应
+                //注意这里第六列数据指定为null，用来存放我们加入的按钮
+                "columns": [
+                    { "data": "name" },
+                    { "data": "corpname" },
+                    { "data": "dynasty" },
+                    { "data": "gender" },
+                    { "data": "job" },
+                    { "data": null}
+                ],
+                //填充的数据，这里用的是静态数据，数据源可以来自前台，也可以来自服务器
+                "data": [
+                    { "name": "黄蓉黄蓉黄蓉黄蓉黄蓉黄蓉黄蓉", "corpname": "丐帮", "dynasty": "南宋", "gender": "女", "job": "丐帮帮主"},
+                    { "name": "郭靖", "corpname": "丐帮", "dynasty": "南宋", "gender": "男", "job": "抗金领袖" },
+                    { "name": "杨过", "corpname": "古墓派", "dynasty": "南宋", "gender": "男", "job": "神雕侠" },
+                    { "name": "李莫愁", "corpname": "古墓派", "dynasty": "南宋", "gender": "女", "job": "反派"},
+                    { "name": "任我行", "corpname": "日月神教", "dynasty": "不明", "gender": "男", "job": "日月神教教主"},
+                    { "name": "令狐冲", "corpname": "华山派", "dynasty": "不明", "gender": "男", "job": "华山派大弟子" },
+                    { "name": "岳不群", "corpname": "华山派", "dynasty": "不明", "gender": "男", "job": "华山派掌门" },
+                    { "name": "左冷禅", "corpname": "嵩山派", "dynasty": "不明", "gender": "男", "job": "嵩山派掌门" },
+                    { "name": "张无忌", "corpname": "明教", "dynasty": "元朝", "gender": "男", "job": "明教教主"},
+                    { "name": "韦小宝", "corpname": "天地会", "dynasty": "清朝", "gender": "男", "job": "青木堂堂主" },
+                    { "name": "康熙", "corpname": "清政府", "dynasty": "清朝", "gender": "男", "job": "皇帝" },
+                    { "name": "赵敏", "corpname": "元政府", "dynasty": "元朝", "gender": "女", "job": "郡主"},
+                    { "name": "张三丰", "corpname": "武当派", "dynasty": "元朝", "gender": "男", "job": "武当创始人" }
+                ],
+                language: {
+                    "sProcessing": "处理中...",
+                    "sLengthMenu": "显示 _MENU_ 项结果",
+                    "sZeroRecords": "没有匹配结果",
+                    "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                    "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                    "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                    "sInfoPostFix": "",
+                    "sSearch": "搜索:",
+                    "sUrl": "",
+                    "sEmptyTable": "表中数据为空",
+                    "sLoadingRecords": "载入中...",
+                    "sInfoThousands": ",",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "上页",
+                        "sNext": "下页",
+                        "sLast": "末页"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": 以升序排列此列",
+                        "sSortDescending": ": 以降序排列此列"
+                    }
+                }
+            });
+
+            //为我们生成的按钮绑定方法，这里是弹出姓名和职业的对话框
+            $(".testButton").on("click", function (e) {
+                if(e.preventDefault){
+                e.preventDefault();
+                }else{
+                window.event.returnValue == false;
+                }
+                var data = $(this).data('datas')
+                console.log(data)
+                var menu = "<ul id='tables_menu'><li id='tables_menu_li'>详情</li><li id='tables_menu_li'>编辑</li><li id='tables_menu_li'>删除</li></ul>"
+                if($(this).find('#tables_menu').length) {
+                    
+                    $(this).find('.button_box').empty()
+                } else {
+                    $(this).find('.button_box').append(menu)
+                }
+                
+            });
+
+            $(document).click(function (e) {
+                if(e.preventDefault){
+                e.preventDefault();
+                }else{
+                window.event.returnValue == false;
+                }
+                var e = e || window.event; //浏览器兼容性 
+                var elem = e.target || e.srcElement;
+                console.log((elem.id && elem.id != 'tables_menu' && elem.id !='testButton' && elem.id !='tables_menu_li')||!elem.id)
+                if((elem.id && elem.id != 'tables_menu' && elem.id !='testButton' && elem.id !='tables_menu_li')||!elem.id) {
+                    
+                    $('.button_box').empty()
+                }
+				// while (elem) { //循环判断至跟节点，防止点击的是div子元素 
+				// 	if (elem.id && elem.id == 'tables_menu'&&elem.id =='testButton') {
+				// 		// return;
+				// 	}
+				// 	elem = elem.parentNode;
+                // }
+                
+            });
+
+        } );
+    </script>
+</body>
+</html>
