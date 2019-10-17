@@ -7,18 +7,19 @@
     <title>tables</title>
     <!--引入css-->
     <link rel="stylesheet" type="text/css" href="css/jquery.dataTables.css">
+    <link rel="stylesheet" href="css/fixedColumns.dataTables.min.css">
     
     <!--引入JavaScript-->
     <script src="js/jquery-3.4.1.min.js"></script>
     <script type="text/javascript" charset="utf8" src="js/jquery.dataTables.js"></script>
-
+    <script src="js/dataTables.fixedColumns.js"></script>
     <style>
         th, td { 
             white-space: nowrap;
             text-align: left;
         }
-        .dataTables_wrapper {
-            min-width: 800px;
+        div.dataTables_wrapper {
+            width: 800px;
             margin: 0 auto;
         }
         #tables_menu {
@@ -48,7 +49,7 @@
 </head>
 <body>
     <div class="dataTables_wrapper">
-        <table id="example" class="display" style="width:100%">
+        <table id="example" class="stripe row-border order-column" style="width:100%">
             <thead>
                 <tr>
                     <td>姓名</td>
@@ -73,7 +74,7 @@
                 ordering:  false
             } );
 
-            $('#example').DataTable({
+            var dataTable = $('#example').DataTable({
                 "scrollX": true,
                 //给table内自定义按钮
                 "columnDefs": [
@@ -136,8 +137,17 @@
                         "sSortAscending": ": 以升序排列此列",
                         "sSortDescending": ": 以降序排列此列"
                     }
-                }
+                },
+                fixedColumns: true
             });
+
+            // new $.fn.dataTable.FixedColumns(dataTable,{
+            //     "iLeftColumns":2,  //开启左侧两列固定
+            //     "iRightColumns":1, //开启右侧1列固定
+            //     "drawCallback": function(){
+            //         //重绘的回调执行
+            //     }
+            // });
 
             //为我们生成的按钮绑定方法，这里是弹出姓名和职业的对话框
             $(".testButton").on("click", function (e) {
