@@ -11,11 +11,37 @@
     <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/fixedcolumns/3.3.0/js/dataTables.fixedColumns.min.js"></script>
     <style>
-    th, td { white-space: nowrap; }
-    div.dataTables_wrapper {
-        width: 800px;
-        margin: 0 auto;
-    }</style>
+        th, td {
+            white-space: nowrap;
+        }
+        div.dataTables_wrapper {
+            width: 800px;
+            margin: 0 auto;
+        }
+        #tables_menu {
+            position: fixed;
+            padding: 0;
+            background: #fff;
+            width: 115px;
+            text-align: left;
+            border-radius: 4px;
+            -webkit-box-shadow: 0 3px 9px rgba(0,0,0,.5);
+                    box-shadow: 0 5px 15px rgba(0,0,0,.5);
+        }
+        #tables_menu li {
+            list-style: none;
+            padding-left: 8px;
+            height: 38px;
+            line-height: 38px;
+        }
+
+        #tables_menu li:hover {
+            background: #f5f5f5;
+        }
+        .last_thead_tr {
+            width: 100px !important;
+        }
+    </style>
 </head>
 <body>
         <table id="example" class="stripe row-border order-column" style="width:100%">
@@ -84,7 +110,7 @@
                 scrollY:        300,
                 scrollX:        true,
                 scrollCollapse: true,
-                paging:         false,
+                // paging:         false,
                 fixedColumns:   { //固定列的配置项
                  leftColumns: 1, //固定左边第一列
                  rightColumns:1 //固定右边第一列
@@ -126,7 +152,65 @@
                 },
                 
             } );
-        } );    
+          
+        
+        
+            //为我们生成的按钮绑定方法，
+            $(".testButton").click(function (e) {
+                
+                var pos = $(this).offset()
+
+                $('.button_box').empty()
+
+                if(e.preventDefault){
+
+                    e.preventDefault();
+
+                }else{
+
+                    window.event.returnValue == false;
+
+                }
+                var data = $(this).data('datas')
+
+                var left = pos.left -80
+
+                var menu = "<ul id='tables_menu' style='left:"+left+"px; top: "+pos.top+"px'><li id='tables_menu_li'>详情</li><li id='tables_menu_li'>编辑</li><li id='tables_menu_li'>删除</li></ul>"
+                
+                if($(this).find('#tables_menu').length) {
+                    
+                    $(this).find('.button_box').empty()
+
+                } else {
+
+                    $(this).find('.button_box').append(menu)
+                }
+                
+            });
+
+            $(document).click(function (e) {
+
+                if(e.preventDefault){
+
+                    e.preventDefault();
+
+                }else{
+
+                    window.event.returnValue == false;
+
+                }
+                var e = e || window.event; //浏览器兼容性 
+
+                var elem = e.target || e.srcElement;
+
+                if((elem.id && elem.id != 'tables_menu' && elem.id !='testButton' && elem.id !='tables_menu_li')||!elem.id) {
+                    
+                    $('.button_box').empty()
+                }
+                
+            });
+        } );
+
     </script>
     
 </body>
